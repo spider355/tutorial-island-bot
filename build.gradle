@@ -18,24 +18,18 @@ repositories {
 }
 
 dependencies {
-    // RuneLite API - provided by client
     compileOnly group: 'net.runelite', name: 'client', version: '1.10.38'
-    
-    // Lombok - provided by RuneLite
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    
-    // These are provided by RuneLite, don't bundle
     compileOnly 'com.google.guava:guava:32.1.2-jre'
     compileOnly 'com.google.inject:guice:5.1.0'
     compileOnly 'org.slf4j:slf4j-api:1.7.36'
 }
 
-// Configuration for shadow (fat) JAR
 shadowJar {
     archiveBaseName = 'tutorial-island-bot'
     archiveVersion = project.version
-    archiveClassifier = '' // No classifier, just version
+    archiveClassifier = ''
     
     manifest {
         attributes(
@@ -44,27 +38,20 @@ shadowJar {
             'Plugin-Provider': 'Microbot',
             'Plugin-Dependencies': '',
             'Plugin-Description': 'Completes Tutorial Island automatically',
-            'Plugin-License': 'BSD-2-Clause',
-            'Plugin-Main-Class': 'net.runelite.client.plugins.microbot.tutorialisland.TutorialIslandPlugin'
+            'Plugin-License': 'BSD-2-Clause'
         )
     }
     
-    // Exclude signature files
     exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-    
-    // Merge service files instead of overwriting
     mergeServiceFiles()
 }
 
-// Make jar task use shadowJar
 jar {
     enabled = false
 }
 
-// Default build task creates fat JAR
 build.dependsOn shadowJar
 
-// Task to copy JAR to RuneLite plugins folder
 task copyToPlugins(type: Copy, dependsOn: shadowJar) {
     from shadowJar.archiveFile
     into "${System.getProperty('user.home')}/.runelite/plugins"
@@ -75,7 +62,6 @@ task copyToPlugins(type: Copy, dependsOn: shadowJar) {
     }
 }
 
-// Quick install task
 task install(dependsOn: copyToPlugins) {
     doLast {
         println "✅ Installation complete!"
@@ -86,7 +72,6 @@ task install(dependsOn: copyToPlugins) {
     }
 }
 
-// Clean old builds
 clean {
     delete "${System.getProperty('user.home')}/.runelite/plugins/tutorial-island-bot-*.jar"
 }
