@@ -92,5 +92,45 @@ public class TutorialStageManager {
         return detectedStage;
     }
 
-    public boolean handle
-
+    public boolean handleStage(TutorialStage stage, TutorialIslandConfig config) {
+        if (stage == TutorialStage.COMPLETED || stage == TutorialStage.NOT_STARTED) {
+            return true;
+        }
+
+        if (stage == TutorialStage.CHARACTER_CREATION) {
+            return true;
+        }
+
+        IStageHandler handler = stageHandlers.get(stage);
+        
+        if (handler == null) {
+            log.error("No handler found for stage: {}", stage);
+            return false;
+        }
+
+        try {
+            boolean success = handler.execute(config);
+
+            if (!success) {
+                String errorKey = "stage_" + stage.name();
+                if (!errorRecovery.handleError(errorKey, "Stage handler returned false")) {
+                    log.error("Max retries reached for stage: {}", stage);
+                    return false;
+                }
+            } else {
+                errorRecovery.resetError("stage_" + stage.name());
+            }
+
+            return success;
+
+        } catch (Exception e) {
+            log.error("Exception in stage handler for {}", stage, e);
+            String errorKey = "stage_" + stage.name();
+            return errorRecovery.handleError(errorKey, e.getMessage());
+        }
+    }
+
+    public TutorialStage getLastDetectedStage() {
+        return lastDetectedStage;
+    }
+}
