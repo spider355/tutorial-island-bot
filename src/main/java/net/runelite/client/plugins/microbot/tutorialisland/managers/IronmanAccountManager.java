@@ -104,4 +104,36 @@ public class IronmanAccountManager {
             return errorRecovery.handleError("confirmAccountType", 
                 "Confirm button not found");
         }
-
+
+        Rs2Widget.clickWidget(confirmButton);
+        sleep(Rs2Random.between(400, 700));
+
+        boolean closed = sleepUntil(() -> !isAccountSelectionOpen(), 5000);
+
+        if (closed) {
+            log.info("Account type selection confirmed and interface closed");
+            Microbot.log("Account type selected successfully!");
+            errorRecovery.resetError("confirmAccountType");
+            return true;
+        } else {
+            log.warn("Account selection interface did not close after confirmation");
+            return errorRecovery.handleError("confirmAccountType", 
+                "Interface didn't close");
+        }
+    }
+
+    public boolean waitForAccountSelection(int timeoutMs) {
+        log.debug("Waiting for account selection interface (timeout: {}ms)", timeoutMs);
+        
+        boolean appeared = sleepUntil(this::isAccountSelectionOpen, timeoutMs);
+        
+        if (appeared) {
+            log.info("Account selection interface appeared");
+            sleep(500);
+            return true;
+        } else {
+            log.warn("Account selection interface did not appear within timeout");
+            return false;
+        }
+    }
+}
