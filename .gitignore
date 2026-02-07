@@ -1,39 +1,22 @@
-# Gradle
 .gradle/
 build/
 out/
 bin/
-
-# IntelliJ IDEA
 .idea/
 *.iml
 *.iws
 *.ipr
-
-# Eclipse
 .classpath
 .project
 .settings/
-
-# VS Code
 .vscode/
-
-# macOS
 .DS_Store
-
-# Logs
 *.log
-
-# Compiled class files
 *.class
-
-# Package Files
 *.war
 *.nar
 *.ear
 *.zip
 *.tar.gz
 *.rar
-
-# Gradle wrapper JAR (we want to include this)
 !gradle/wrapper/gradle-wrapper.jar
