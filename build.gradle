@@ -14,6 +14,9 @@ repositories {
     maven {
         url = 'https://repo.runelite.net'
     }
+    maven {
+        url = 'https://repo.maven.apache.org/maven2'
+    }
     mavenCentral()
 }
 
@@ -21,8 +24,11 @@ dependencies {
     compileOnly group: 'net.runelite', name: 'client', version: '1.10.38'
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    compileOnly 'com.google.guava:guava:32.1.2-jre'
-    compileOnly 'com.google.inject:guice:5.1.0'
+    
+    // Remove the broken Guice and Guava - they come with RuneLite client
+    // compileOnly 'com.google.guava:guava:32.1.2-jre'
+    // compileOnly 'com.google.inject:guice:5.1.0'
+    
     compileOnly 'org.slf4j:slf4j-api:1.7.36'
 }
 
@@ -57,7 +63,7 @@ task copyToPlugins(type: Copy, dependsOn: shadowJar) {
     into "${System.getProperty('user.home')}/.runelite/plugins"
     
     doLast {
-        println "✅ Copied to: ${System.getProperty('user.home')}/.runelite/plugins/${shadowJar.archiveFileName}"
+        println "✅ Copied to: ${System.getProperty('user.home')}/.runelite/plugins/${shadowJar.archiveFileName.get()}"
         println "🔄 Please restart RuneLite to load the plugin"
     }
 }
