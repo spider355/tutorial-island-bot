@@ -15,20 +15,17 @@ repositories {
         url = 'https://repo.runelite.net'
     }
     maven {
-        url = 'https://repo.maven.apache.org/maven2'
+        url = 'https://jitpack.io'
     }
     mavenCentral()
 }
 
 dependencies {
-    compileOnly group: 'net.runelite', name: 'client', version: '1.10.38'
+    // Use Microbot's fork which has all the util classes
+    compileOnly 'com.github.chsami:microbot:master-SNAPSHOT'
+    
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    
-    // Remove the broken Guice and Guava - they come with RuneLite client
-    // compileOnly 'com.google.guava:guava:32.1.2-jre'
-    // compileOnly 'com.google.inject:guice:5.1.0'
-    
     compileOnly 'org.slf4j:slf4j-api:1.7.36'
 }
 
