@@ -125,5 +125,21 @@ public class BrotherBraceStage implements IStageHandler {
                 config.actionDelay());
         }
 
-        if (Rs2Dialogue.hasSelectAn*
-
+        if (Rs2Dialogue.hasSelectAnOption()) {
+            Rs2Dialogue.keyPressForDialogueOption(1);
+            sleep(config.actionDelay());
+        }
+    }
+
+    private boolean shouldTalkToBrother() {
+        return true;
+    }
+
+    private boolean needsToOpenPrayer() {
+        return true;
+    }
+
+    private boolean needsToBuryBones() {
+        return Rs2Inventory.hasItem(ItemID.BONES);
+    }
+}
