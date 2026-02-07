@@ -120,5 +120,24 @@ public class FinancialAdvisorStage implements IStageHandler {
     }
 
     private void handleDialogue(TutorialIslandConfig config) {
-        if
-
+        if (Rs2Dialogue.hasContinue()) {
+            Rs2Dialogue.clickContinue();
+            sleep(config.randomizeDelay() ? 
+                config.actionDelay() + (int)(Math.random() * 200) : 
+                config.actionDelay());
+        }
+
+        if (Rs2Dialogue.hasSelectAnOption()) {
+            Rs2Dialogue.keyPressForDialogueOption(1);
+            sleep(config.actionDelay());
+        }
+    }
+
+    private boolean shouldTalkToAdvisor() {
+        return true;
+    }
+
+    private boolean needsToOpenBank() {
+        return true;
+    }
+}
